@@ -1,0 +1,578 @@
+# create table
+
+CREATE TABLE City (
+
+  name varchar(32),
+
+  description varchar(32),
+
+  primary key (name)
+
+ );
+
+ 
+
+ CREATE TABLE Trainer (
+
+   id INT(11) unsigned AUTO_INCREMENT,
+
+   name varchar(32),
+
+   hometown varchar(32),
+
+   primary key (id),
+
+   foreign key (hometown) references City (name)
+
+ );
+
+ 
+
+ CREATE TABLE Gym (
+
+   leader_id INT(11) unsigned,
+
+   city varchar(32),
+
+   foreign key (leader_id) references Trainer (id),
+
+   foreign key (city) references City (name)
+
+ );
+
+ 
+
+ CREATE TABLE Pokemon (
+
+   id INT(11) unsigned,
+
+   name varchar(32),
+
+   type varchar(32),
+
+   primary key (id)
+
+ );
+
+ 
+
+ CREATE TABLE CatchedPokemon (
+
+   id INT(11) unsigned auto_increment,
+
+   owner_id INT(11) unsigned,
+
+   pid INT(11) unsigned,
+
+   level INT(11) unsigned,
+
+   nickname varchar(32),
+
+   primary key (id),
+
+   foreign key (owner_id) references Trainer (id),
+
+   foreign key (pid) references Pokemon (id)
+
+ );
+
+ 
+
+ CREATE TABLE Evolution (
+
+   before_id INT(11) unsigned,
+
+   after_id INT(11) unsigned,
+
+   foreign key (before_id) references Pokemon (id),
+
+   foreign key (after_id) references Pokemon (id)
+
+ );
+
+ 
+
+# insert.sql
+
+ 
+
+INSERT INTO City (name, description) VALUES
+
+('Blue City', 'Waterpark'),
+
+('Sangnok City', 'Amazon'),
+
+('Brown City', 'Famous Harbor'),
+
+('Rainbow City', 'Huge City with Casino');
+
+ 
+
+INSERT INTO Trainer (name, hometown) VALUES
+
+('Red', 'Sangnok City'),
+
+('Green', 'Sangnok City'),
+
+('Blue', 'Sangnok City'),
+
+('Ash', 'Sangnok City'),
+
+('Yellow', 'Sangnok City'),
+
+('Gold', 'Blue City'),
+
+('Matis', 'Brown City'),
+
+('Erika', 'Rainbow City'),
+
+('Misty', 'Blue City');
+
+ 
+
+INSERT INTO Gym (leader_id, city) VALUES
+
+((SELECT id from Trainer where name='Misty'), 'Blue City'),
+
+((SELECT id from Trainer where name='Green'), 'Sangnok City'),
+
+((SELECT id from Trainer where name='Matis'), 'Brown City'),
+
+((SELECT id from Trainer where name='Erika'), 'Rainbow City');
+
+ 
+
+INSERT INTO Pokemon (id, name, type) VALUES
+
+(1, 'Bulbasaur', 'Grass'),
+
+(2, 'Ivysaur', 'Grass'),
+
+(3, 'Venusaur', 'Grass'),
+
+(4, 'Charmander', 'Fire'),
+
+(5, 'Charmeleon', 'Fire'),
+
+(6, 'Charizard', 'Fire'),
+
+(7, 'Squirtle', 'Water'),
+
+(8, 'Wartortle', 'Water'),
+
+(9, 'Blastoise', 'Water'),
+
+(17, 'Pidgeotto', 'Normal'),
+
+(18, 'Pidgeot', 'Normal'),
+
+(25, 'Pikachu', 'Electric'),
+
+(26, 'Raichu', 'Electric'),
+
+(37, 'Vulpix', 'Fire'),
+
+(38, 'Ninetales', 'Fire'),
+
+(46, 'Paras', 'Grass'),
+
+(47, 'Parasect', 'Grass'),
+
+(54, 'Psyduck', 'Water'),
+
+(55, 'Golduck', 'Water'),
+
+(84, 'Doduo', 'Normal'),
+
+(85, 'Dodrio', 'Normal'),
+
+(116, 'Horsea', 'Water'),
+
+(117, 'Seadra', 'Water'),
+
+(126, 'Magmar', 'Fire'),
+
+(129, 'Magikarp', 'Water'),
+
+(130, 'Gyarados', 'Water'),
+
+(131, 'Lapras', 'Water'),
+
+(133, 'Eevee', 'Normal'),
+
+(137, 'Porygon', 'Normal'),
+
+(150, 'Mewtwo', 'Psychic'),
+
+(151, 'Mew', 'Psychic'),
+
+(152, 'Chikorita', 'Grass'),
+
+(172, 'Pichu', 'Electric'),
+
+(249, 'Lugia', 'Psychic'),
+
+(251, 'Celebi', 'Psychic');
+
+ 
+
+INSERT INTO Evolution (before_id, after_id) VALUES
+
+(1,2),
+
+(2,3),
+
+(4,5),
+
+(5,6),
+
+(7,8),
+
+(8,9),
+
+(17,18),
+
+(25,26),
+
+(37,38),
+
+(46,47),
+
+(54,55),
+
+(84,85),
+
+(116,117),
+
+(129,130),
+
+(172,25);
+
+ 
+
+INSERT INTO CatchedPokemon (pid, owner_id, level, nickname) VALUES
+
+(6, (SELECT id from Trainer where name='Green'), 70, 'After eating hot peppers'),
+
+(3, (SELECT id from Trainer where name='Red'), 80, 'Funny Smell'),
+
+(25, (SELECT id from Trainer where name='Red'), 10, 'AAA'),
+
+(25, (SELECT id from Trainer where name='Ash'), 50, 'Mouse'),
+
+(26, (SELECT id from Trainer where name='Red'), 60, 'AA'),
+
+(131, (SELECT id from Trainer where name='Misty'), 80, 'Laputa'),
+
+(131, (SELECT id from Trainer where name='Ash'), 50, 'Turtle'),
+
+(133, (SELECT id from Trainer where name='Green'), 5, 'Fluffy'),
+
+(150, (SELECT id from Trainer where name='Red'), 100, 'Spoon killer'),
+
+(152, (SELECT id from Trainer where name='Gold'), 1, 'Salad'),
+
+(152, (SELECT id from Trainer where name='Gold'), 2, 'Piece of cake'),
+
+(8, (SELECT id from Trainer where name='Blue'), 20, 'Ninja Turtle'),
+
+(117, (SELECT id from Trainer where name='Blue'), 20, 'Water gun'),
+
+(38, (SELECT id from Trainer where name='Green'), 50, 'Ahri'),
+
+(55, (SELECT id from Trainer where name='Green'), 65, 'Donald Duck'),
+
+(26, (SELECT id from Trainer where name='Yellow'), 60, 'First friend'),
+
+(84, (SELECT id from Trainer where name='Yellow'), 3, 'Cho\'gall'),
+
+(85, (SELECT id from Trainer where name='Yellow'), 3, 'Three-headed dumb'),
+
+(46, (SELECT id from Trainer where name='Erika'), 30, 'Mushroom'),
+
+(152, (SELECT id from Trainer where name='Erika'), 5, 'Chikorita'),
+
+(130, (SELECT id from Trainer where name='Misty'), 90, 'Worm'),
+
+(25, (SELECT id from Trainer where name='Matis'), 40, 'Free Battery'),
+
+(26, (SELECT id from Trainer where name='Matis'), 50, 'Huge Battery'),
+
+(172, (SELECT id from Trainer where name='Matis'), 10, 'Small Battery'),
+
+(130, (SELECT id from Trainer where name='Red'), 95, 'Big yawn');
+
+
+
+
+
+
+#1 Grass 타입 사전순 포켓몬 출력
+select name
+from Pokemon
+where type = 'grass'
+order by name;
+#2 Brown city, Rainbow city 트레이너 이름 사전순 출력
+select name
+from Trainer
+where hometown = 'Brown city' or 
+hometown = 'Rainbow city'
+order by name;
+#3 모든 포켓몬 type을 중복없이 사전순 출력
+select distinct type
+from Pokemon
+order by type;
+#4 B로 시작하는 도시 이름 사전순 출력
+select name
+from City
+where name like 'B%'
+order by name;
+#5 M으로 시작하지 않는 트레이너 고향 사전순 출력
+select hometown
+from Trainer
+where !(name like 'M%') 
+order by hometown;
+#6 잡힌 포켓몬 중 가장 레벨이 높은 포켓몬 별명 사전순 출력
+select nickname
+from CatchedPokemon 
+where level >= ALL(
+  select level
+  from CatchedPokemon
+  )
+order by nickname;
+#7 포켓몬의 이름이 알파벳 모음으로 시작하는 포켓몬 이름 사전순 출력
+select name
+from Pokemon
+where name like 'a%' or name like 'e%'
+or name like 'i%' or name like 'o%'
+or name like 'u%'
+order by name;
+#8 잡힌 포켓몬 평균 레벨 출력
+select AVG(level) 
+from CatchedPokemon;
+#9 Yellow가잡은포켓몬의최대레벨을출력하세요
+select MAX(level)
+from CatchedPokemon
+where owner_id = (SELECT id from Trainer where name='Yellow');
+#10 트레이너의고향이름을중복없이사전순으로출력하세요
+select distinct hometown
+from Trainer
+order by hometown;
+#11 닉네임이 A로 시작하는 포켓몬을 잡은 트레이너의이름과
+#포켓몬의 닉네임을 트레이너의 이름의 사전순으로출력하세요 
+select t.name, c.nickname 
+from CatchedPokemon c, Trainer t
+where c.nickname like 'A%' AND c.owner_id = t.id
+order by t.name;
+#12 Amazon 특성을가진도시의리더의트레이너이름을출력하세요
+select t.name
+from Trainer t, Gym g
+where t.id = g.leader_id and g.city in (select name 
+       from City
+       where description = 'Amazon'
+       );
+       
+#13 불속성 포켓몬을 가장 많이 잡은 트레이너의 id와, 
+#그 트레이너가 잡은 불속성 포켓몬의 수를 출력하세요
+select FireNum.owner_id, FireNum.num AS MaxNum
+from ((select owner_id, COUNT(*) AS num
+       from CatchedPokemon
+       where pid in (select id
+              from Pokemon
+              where type = 'Fire'
+              )
+group by owner_id) AS FireNum)
+where FireNum.num >= ALL(select COUNT(*) AS num
+       from CatchedPokemon
+       where pid in (select id
+              from Pokemon
+              where type = 'Fire'
+              )
+group by owner_id)
+;
+#14 포켓몬ID가한자리수인포켓몬의type을중복없이포켓몬ID의내림차순으로출력하세요 
+select DISTINCT type
+from Pokemon
+where char_length(id) = 1
+order by id DESC
+;
+#15 포켓몬의type이Fire이아닌포켓몬의수를출력하세요 
+select COUNT(*)
+from Pokemon
+where type != 'Fire'
+;
+#16 진화하면id가작아지는포켓몬의진화전이름을사전순으로출력하세요
+select name
+from Pokemon, Evolution
+where before_id > after_id AND id = before_id
+order by name
+;
+#17 트레이너에게잡힌모든물속성포켓몬의평균레벨을출력하세요
+select AVG(level)
+from CatchedPokemon  
+where pid in (select id
+      from Pokemon
+      where type = 'Water') 
+;
+# 18체육관리더가잡은모든포켓몬중레벨이가장높은포켓몬의별명을출력하세요
+select c.nickname
+from CatchedPokemon c, Gym g
+where g.leader_id = c.owner_id AND c.level >= ALL(select level
+                     from CatchedPokemon c, Gym g
+                     where g.leader_id = c.owner_id)
+;
+#19 Blue city 출신트레이너들 중 잡은 포켓몬들의 레벨의평균이
+#가장 높은 트레이너의 이름을 사전순으로 출력하세요 
+select name
+from Trainer
+where id in(select BlueCityIdLevel.owner_id
+            from (select owner_id, AVG(level) AS AvgLevel
+                  from CatchedPokemon
+                  where owner_id in(select id
+                                    from Trainer
+                                    where hometown = 'Blue City')
+                  group by owner_id) AS BlueCityIdLevel
+            where BlueCityIdLevel.AvgLevel >= ALL(select AVG(level) AS AvgLevel
+                                                  from CatchedPokemon
+                                                  where owner_id in(select id
+                                                                    from Trainer
+                                                                    where hometown = 'Blue City')
+                                                  group by owner_id)
+                                                  )      
+order by name
+;
+#20 같은 출신이 없는 트레이너들이 잡은 포켓몬 중 진화가가능하고
+#Electric 속성을가진포켓몬의이름 을출력하세요
+select name
+from Pokemon
+where id in (select pid
+             from CatchedPokemon
+             where owner_id in (select id
+                                from Trainer
+                                group by hometown
+                                having COUNT(*) = 1)
+              AND
+      
+              pid in (select id
+                      from Pokemon, Evolution
+                      where type = 'Electric' AND id = before_id)
+            )
+;
+#21 관장들의이름과 각관장들이 잡은포켓몬들의 레벨합을 레벨합의 내림차순으로 출력하세요
+select t.name, SUM(c.level) AS SumLevel  
+from Trainer t, CatchedPokemon c
+where t.id = c.owner_id
+group by c.owner_id
+having c.owner_id in (select t.id
+                     from Gym g, Trainer t
+                     where g.leader_id = t.id)
+order by SumLevel DESC
+;
+#22 가장트레이너가많은고향의이름을출력하세요. 
+select hometown
+from Trainer
+group by hometown
+having COUNT(*) >= ALL(select COUNT(*)
+                       from Trainer
+                       group by hometown)
+;
+#23 SangnokCity 출신트레이너와 Brown City 출신트레이너가 공통으로 잡은포켓몬의이름을
+#중복을 제거하여 사전순으로출력하세요
+select DISTINCT p.name
+from CatchedPokemon c, Pokemon p
+where c.pid = p.id AND c.pid in (select pid
+                                 from CatchedPokemon
+                                 where owner_id in (select id
+                                                    from Trainer
+                                                    where hometown = 'Sangnok City')
+                                 )
+                                 
+                   AND c.pid in (select pid
+                                 from CatchedPokemon
+                                 where owner_id in (select id
+                                                    from Trainer
+                                                    where hometown = 'Brown City')
+                                )                   
+order by p.name
+;
+#24 이름이 P로 시작하는 포켓몬을 잡은 트레이너중
+#상록시티 출신인 트레이너의 이름을 사전순으로 모두출력하세요 
+select t.name
+from Trainer t
+join CatchedPokemon c ON t.id =  c.owner_id
+where t.hometown = 'Sangnok City' AND c.pid in (select id
+                                            from Pokemon
+                                            where name like 'P%'
+                                            )
+order by t.name
+;
+#25 트레이너의이름과 그 트레이너가 잡은 포켓몬의 이름을 출력하세요.
+#트레이너이름의 사전순으로 정렬하고, 
+#각트레이너가 잡은 포켓몬간에도 사전순으로 정렬하세요. 
+select t.name, p.name
+from CatchedPokemon c
+join Trainer t on t.id = c.owner_id
+join Pokemon p on p.id = c.pid
+order by t.name, p.name
+;
+#26 2단계 진화만 가능한 포켓몬의 이름을 사전순으로 출력하세요
+select p.name
+from Pokemon p
+where p.id in(select before_id
+              from Evolution
+              where !(after_id in (select before_id from Evolution))
+                    AND !(before_id in (select after_id from Evolution))
+             )
+order by p.name
+;
+#27 상록시티의 관장이 잡은 포켓몬들중
+#포켓몬의타입이 WATER 인포켓몬의별명을 사전순으로 출력 하세요 
+select c.nickname
+from CatchedPokemon c
+join Pokemon p on p.id = c.pid
+where p.type = 'Water' AND c.owner_id in (select leader_id
+                                          from Gym
+                                          where city = 'Sangnok City')
+order by c.nickname
+;
+#28 트레이너들이잡은포켓몬중진화한포켓몬이3마리이상인경우
+#해당트레이너의이름을사전순으 로출력하세요 
+select t.name
+from Trainer t, Evolution e, CatchedPokemon c
+where t.id = c.owner_id AND c.pid = e.after_id
+group by c.owner_id
+having COUNT(*) >= 3
+order by t.name
+;
+#29 어느트레이너에게도잡히지않은포켓몬의이름을사전순으로출력하세요
+select p.name
+from Pokemon p
+where !(p.id in (select pid
+                 from CatchedPokemon)
+        )
+order by p.name
+;
+#30 각출신 도시별로 트레이너가 잡은포켓몬 중
+#가장레벨이 높은 포켓몬의 레벨을 내림차순으로 출력하세요. 
+select MAX(c.level)
+from CatchedPokemon c
+join Trainer t ON c.owner_id = t.id
+group by t.hometown
+order by MAX(c.level) DESC
+;
+#31  포켓몬중3단진화가가능한포켓몬의ID 와해당포켓몬의이름을1단진화형태포켓몬의이름,
+#2단 진화형태포켓몬의이름, 3단진화형태포켓몬의이름을ID 의오름차순으로출력하세요
+select pid, (select name from Pokemon where id = id_1), 
+             (select name from Pokemon where id = id_2), 
+             (select name from Pokemon where id = id_3)
+from (select p.id as pid, (select id from Pokemon where id = e.before_id) as id_1, 
+                          (select id from Pokemon where id = e.after_id) as id_2,
+                          (select after_id from Evolution where before_id = e.after_id) as id_3
+      from Pokemon p, Evolution e
+      where p.id = e.before_id AND e.after_id in (select p.id
+                                                  from Pokemon p, Evolution e
+                                                  where p.id = e.before_id OR p.id = e.after_id
+                                                  group by p.id
+                                                  having COUNT(*) = 2)
+      )as aa
+order by pid;
